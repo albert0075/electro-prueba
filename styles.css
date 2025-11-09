@@ -589,6 +589,17 @@ main { min-height: 80vh; }
 
 /* Promo detailed text and responsive tweaks */
 .promo-detailed-text { margin:0; color: #cbeee0; font-size: 0.96rem; line-height:1.2; max-height: 6.6em; overflow: hidden; }
+
+
+/* Responsive */
+@media (max-width: 900px) {
+  .admin-panel { padding: 1.2rem; max-width: 720px; }
+  .product-card { min-height: 260px; padding: 0.8rem; }
+  .product-image { width: 96px; height: 96px; }
+  .promo-detailed-thumb { flex: 0 0 110px; height: 88px; }
+  .promo-detailed-title { font-size: 1rem; }
+}
+
 /* Responsive: apilar en móvil */
 @media (max-width: 720px) {
   .promo-detailed-card {
@@ -769,80 +780,26 @@ html.is-mobile .logo-nav { height:58px; }
      .brand-neon { display: none; } */
 }
 
-/* Floating bubbles (bottom-right stacked) */
-#floatBubbles {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 140;
-  pointer-events: none; /* container non-interactive to let buttons handle events */
-}
-.fab {
-  pointer-events: auto;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: none;
-  background: linear-gradient(90deg,#00eaff,#00ff85);
-  color: #0e1618;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-  cursor: pointer;
-  transition: transform .12s ease, box-shadow .12s ease;
-  position: relative;
-}
-.fab:active { transform: scale(0.96); }
-.fab-cart { background: linear-gradient(90deg,#ffd166,#ff7ab6); color:#231f20; }
-.fab-ws { background: linear-gradient(90deg,#25D366,#00bfa5); color:#fff; }
 
-/* badge on cart */
-.fab-badge {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  border-radius: 12px;
-  background: #ff3b3b;
+
+/* Badge "Agotado" */
+.agotado-badge {
+  display:inline-block;
+  background: #ff5b5b;
   color: #fff;
+  padding: 6px 8px;
+  border-radius: 8px;
   font-weight: 700;
-  font-size: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
 }
+.product-card button[disabled] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
 
-/* small screens adjust */
-@media (max-width: 720px) {
-  #floatBubbles { right: 12px; bottom: 14px; gap:10px; }
-  .fab { width:52px; height:52px; }
-  .fab-badge { top:-5px; right:-5px; min-width:18px; height:18px; font-size:11px; }
-}
 
-/* optional pulse for WhatsApp bubble to draw attention */
-.fab-ws::after {
-  content: "";
-  position: absolute;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(37,211,102,0.12) 0%, rgba(37,211,102,0) 60%);
-  animation: pulseWs 2.6s infinite;
-  z-index: -1;
-  transform: scale(1);
-}
-@keyframes pulseWs {
-  0% { transform: scale(0.9); opacity: 1; }
-  70% { transform: scale(1.6); opacity: 0; }
-  100% { transform: scale(1.6); opacity: 0; }
-}
+
+
+
 
 /* --- Ajustes para que promociones y el inicio queden organizados en móvil --- */
 /* Pegar al final de styles.css */
@@ -957,16 +914,208 @@ main, .section {
     margin-right: 8px;
   }
 }
-/* Badge "Agotado" */
-.agotado-badge {
-  display:inline-block;
-  background: #ff5b5b;
+
+
+
+
+
+
+
+/* >>> Ajustes para centrar los textos de la sección INICIO */
+#inicio .title,
+#inicio .subtitle,
+#inicio .welcome-message,
+#inicio .home-cta,
+#inicio .home-section {
+  text-align: center;
+}
+
+/* Limitar ancho del contenido y centrar con márgenes automáticos */
+#inicio .welcome-message {
+  max-width: 900px;
+  margin: 1rem auto;
+  line-height: 1.6;
+  font-size: 1.03rem;
+  color: inherit;
+}
+
+/* Asegurar que el CTA quede centrado */
+#inicio .home-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* Centrar y acotar los bloques de Favoritos y Promos */
+#inicio .home-section,
+#inicio #favoritesContainer,
+#inicio #promosContainer {
+  max-width: 1100px;
+  margin: 1rem auto;
+}
+
+/* Pequeñas mejoras responsivas */
+@media (max-width: 720px) {
+  #inicio .welcome-message { padding: 0 1rem; font-size: 1rem; }
+  #inicio .title { font-size: 1.6rem; }
+  #inicio .subtitle { font-size: 1rem; }
+}
+
+
+
+
+
+/* === Ajustes: centrar finalizar compra, tarjetas compactas en móvil y control de columnas móviles === */
+
+/* Centrar botón Finalizar Compra */
+.cart-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* Variable por defecto: columnas móviles (se puede cambiar desde JS) */
+:root {
+  --mobile-columns: 2; /* valor por defecto - el usuario puede elegir 1,2,3,4 */
+}
+
+/* Estilos para tarjetas compactas en móvil */
+@media (max-width: 720px) {
+  /* Forzar columnas según variable */
+  .grid {
+    grid-template-columns: repeat(var(--mobile-columns), 1fr) !important;
+    gap: 0.8rem;
+  }
+
+  /* Tarjeta compacta */
+  .product-card {
+    padding: 0.7rem;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    justify-content: flex-start;
+  }
+
+  /* Mostrar solo imagen y nombre y botones; ocultar detalles largos */
+  .product-card .product-image {
+    width: 86px;
+    height: 86px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin: 0;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+
+  .product-card h3,
+  .product-card .product-image {
+    text-align: center;
+  }
+
+  /* Ocultar elementos que no deben aparecer en la vista compacta */
+  .product-card .desc-list,
+  .product-card .card-info,
+  .product-card .card-description,
+  .product-card .card-stats {
+    display: none !important;
+  }
+
+  /* Acciones de la tarjeta (Comprar + Ver más) */
+  .product-card .card-actions {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    padding-top: 4px;
+  }
+  .product-card .card-actions .btn {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+  .product-card .card-actions .btn.small {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.86rem;
+  }
+
+  /* Ver más botón look */
+  .ver-mas-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.06);
+    color: #fff;
+    font-weight: 700;
+    border-radius: 10px;
+  }
+
+  /* Asegurar que el highlight temporal se vea bien en móvil */
+  .product-card.temp-highlight {
+    box-shadow: 0 6px 26px rgba(255,0,90,0.08);
+    transform: translateY(-4px);
+  }
+
+  /* Ajustes de texto */
+  .product-card h3 {
+    font-size: 0.98rem;
+    margin: 6px 0 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+}
+
+/* UI control (select) dentro de .catalog-controls */
+.catalog-controls .mobile-columns-control {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-left: 0.6rem;
+  color: var(--text-white, #fff);
+  font-weight: 700;
+}
+.catalog-controls .mobile-columns-control select {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
   color: #fff;
   padding: 6px 8px;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 0.9rem;
-  margin-bottom: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
 }
-.product-card button[disabled] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+
+
+
+
+
+/* Añade este bloque al final de tu styles.css (o donde quieras) para estilizar los precios visibles en tarjeta */
+.card-price {
+  margin-top: 0.4rem;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--neon-cyan, #00ffd6);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+/* Asegurar clases internas se vean bien */
+.product-card .precio {
+  color: var(--neon-cyan, #00ffd6);
+  font-weight: 900;
+  font-size: 1.05rem;
+}
+.product-card .oferta {
+  color: var(--neon-pink, #ff295e);
+  font-weight: 900;
+  font-size: 1.03rem;
+}
+.product-card .oferta small,
+.product-card .oferta span strike,
+.product-card .oferta del { color: #aaa; }
+
+/* En móvil mantener precio visible y adaptado */
+@media (max-width: 720px) {
+  .card-price { font-size: 0.98rem; font-weight: 800; color: var(--neon-cyan, #00ffd6); }
+  .product-card .precio, .product-card .oferta { font-size: 0.98rem; }
+}
