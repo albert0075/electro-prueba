@@ -1,0 +1,221 @@
+/* tutorial.css - estilos para el tour interactivo */
+
+/* Overlay oscuro */
+.ef-tut-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3,6,9,0.55);
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
+.ef-tut-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Tooltip / caja de texto */
+.ef-tut-tooltip {
+  position: fixed;
+  z-index: 9999;
+  max-width: 100px;
+  background: linear-gradient(180deg, #0f1318, #0b0b0d);
+  color: #fff;
+  padding: 14px;
+  border-radius: 12px;
+  box-shadow: 0 12px 44px rgba(0,0,0,0.7), 0 8px 28px rgba(127,0,255,0.06);
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: transform 160ms ease, top 260ms ease, left 260ms ease;
+  font-size: 0.98rem;
+}
+.ef-tut-tooltip.ef-center {
+  transform: translate(-50%, -50%);
+}
+
+/* Head y body */
+.ef-tut-head strong { display:block; font-size:1.05rem; margin-bottom:6px; color:var(--neon-pink,#ff295e); }
+.ef-tut-body { color: #cfeee6; line-height:1.35; font-size:0.95rem; }
+
+/* Controls */
+.ef-tut-controls { display:flex; gap:8px; justify-content:flex-end; margin-top:10px; }
+.ef-tut-controls .btn.small { padding:6px 10px; font-size:0.85rem; }
+
+/* Highlighted element (outline + glow) */
+.ef-tut-highlight {
+  position: relative;
+  z-index: 10000 !important;
+  box-shadow: 0 12px 40px rgba(255,41,94,0.12) !important;
+  outline: 3px solid rgba(255,41,94,0.12) !important;
+  border-radius: 8px;
+  transition: box-shadow 250ms ease, outline 250ms ease, transform 250ms ease;
+  transform: translateY(-4px);
+}
+
+/* Prompt (inicio) */
+.ef-tut-prompt {
+  position: fixed;
+  z-index: 10001;
+  left: 50%;
+  top: 14%;
+  transform: translateX(-50%) translateY(-10px);
+  background: linear-gradient(180deg,#0f1318,#0b0b0d);
+  color: #fff;
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.04);
+  width: min(720px, 92%);
+  max-width: 720px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 220ms ease, opacity 200ms ease;
+}
+.ef-tut-prompt.open {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.ef-prompt-inner h3 { margin:0 0 6px 0; color:var(--neon-pink,#ff295e); }
+.ef-prompt-inner p { margin:0 0 12px 0; color:#cbeee0; line-height:1.35; }
+
+/* Prompt buttons */
+.ef-prompt-actions { display:flex; gap:8px; justify-content:flex-end; }
+.ef-prompt-actions .btn { padding:10px 14px; font-weight:800; }
+
+/* Responsivo: tooltip full width en móvil */
+@media (max-width: 720px) {
+  .ef-tut-tooltip { left: 8px !important; right: 8px !important; top: auto !important; bottom: 12px !important; transform: none; max-width: calc(100% - 32px); }
+  .ef-tut-prompt { top: 8%; width: calc(100% - 24px); }
+
+
+
+  /* Fixes responsivos para evitar que elementos se salgan de la pantalla
+   Pegar al final de styles.css o guardar como tutorial-fix.css y enlazarlo
+*/
+
+/* 1) Evitar overflow horizontal general */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden; /* asegura que nada provoque scroll horizontal */
+}
+
+/* 2) Asegurar que imágenes y miniaturas no forcen ancho */
+img, .product-image, .promo-detailed-thumb img, .fav-btn img {
+  max-width: 100%;
+  height: auto !important;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* 3) Evitar que tarjetas / grids crezcan más allá del contenedor */
+.grid,
+.promos-detailed-grid,
+#catalogContainer,
+#favoritesContainer,
+.promo-detailed-card,
+.product-card,
+.fav-btn,
+.admin-panel .product-admin-item {
+  width: 100%;
+  min-width: 0; /* evita que elementos con texto largo aumenten el ancho */
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* 4) Permitir que títulos y textos largos se envuelvan en móvil */
+.product-card h3,
+.product-card .card-description,
+.fav-btn span,
+.promo-detailed-title {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* 5) Limitar alturas mínimas en tarjeta para móviles y evitar salto de layout */
+@media (max-width: 720px) {
+  .product-card {
+    min-height: auto;
+    padding: 0.7rem;
+    align-items: flex-start;
+  }
+  .product-card h3 {
+    font-size: 0.98rem;
+    white-space: normal;
+  }
+}
+
+/* 6) Logos y header: reducir tamaño en pantallas pequeñas para no empujar contenido */
+.logo-nav {
+  height: auto;
+  max-height: 72px;
+  width: auto;
+}
+@media (max-width: 900px) {
+  .logo-nav { max-height: 64px; }
+}
+@media (max-width: 720px) {
+  .logo-nav { max-height: 56px; }
+  .nav-left { gap: 0.6rem; }
+  nav.main-nav { padding: 0.6rem 0.8rem; }
+  .brand-neon { display: none; } /* ya existe html.is-mobile pero reforzamos */
+}
+
+/* 7) Contenedor principal centrado y con máximo ancho para pantallas grandes */
+main {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+  box-sizing: border-box;
+}
+
+/* 8) Tooltip / prompt del tutorial: asegurar que no fuerce ancho (si aplicaste tutorial.css) */
+.ef-tut-prompt {
+  width: min(720px, 92%);
+  max-width: 92%;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  box-sizing: border-box;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+/* 9) Floating bubbles: no dejan scroll horizontal y se ubican relativamente */
+#floatBubbles {
+  right: 12px;
+  left: auto;
+  pointer-events: auto;
+}
+
+/* 10) Asegurar que los elementos con overflow interno no generen scroll global */
+.promo-detailed-text,
+.promo-detailed-card,
+.admin-panel, .product-admin-item {
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+/* 11) Pequeño ajuste para inputs/labels que puedan hacerse muy anchos */
+.admin-panel input, .admin-panel select, .admin-panel button {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* 12) Forzar que las grids en móvil usen la variable y no creen ancho extra */
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: repeat(var(--mobile-columns, 2), 1fr) !important;
+    gap: 0.8rem;
+    width: 100%;
+  }
+}
+
+/* fin de fixes */
+}
+
+/* Asegurar que el highlight no rompa layout demasiado */
+.ef-tut-highlight img { transition: transform 160ms ease; }
