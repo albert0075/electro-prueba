@@ -19,7 +19,7 @@
 .ef-tut-tooltip {
   position: fixed;
   z-index: 9999;
-  max-width: 420px;
+  max-width: 100px;
   background: linear-gradient(180deg, #0f1318, #0b0b0d);
   color: #fff;
   padding: 14px;
