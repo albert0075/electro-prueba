@@ -16,7 +16,8 @@
 
       <div class="nav-links" aria-hidden="false">
         <a href="#" onclick="showSection('inicio')">Inicio</a>
-        <a href="#" onclick="showSection('catalogo')">Catálogo</a>
+        <!-- ahora abre Inicio y desplaza al catálogo integrado -->
+        <a href="#" onclick="openCatalog(); return false;">Catálogo</a>
         <a href="#" onclick="showSection('carrito')">Carrito</a>
         <a href="#" onclick="showSection('contacto')">Contacto</a>
         <a href="#" onclick="showSection('admin')">Administrador</a>
@@ -38,44 +39,68 @@
   </nav>
 
   <main>
-    <!-- INICIO -->
+    <!-- INICIO (ahora incluye catálogo integrado y promos laterales) -->
     <section id="inicio" class="section active" aria-labelledby="inicio-title">
       <h1 id="inicio-title" class="title">Bienvenido a Electroflips Xperience</h1>
       <div class="subtitle">Tu tienda online de servicios y productos electrónicos</div>
 
-      <p class="welcome-message">
-        Disfruta tus plataformas de streaming favoritas, música, deportes y más.
-        <br><span class="highlight">¡Al mejor precio y con calidad garantizada!</span> 💸🔐📺
-        <br>Ofertas exclusivas, acceso inmediato y atención personalizada.
-        <br>¿List@ para hacer de tu sofá el mejor cine del mundo? <span class="wave">🍿🛋️</span>
-      </p>
+      <!-- Intro: descripción + promos al lado -->
+      <div class="intro-wrap" style="margin-top:1rem;">
+        <!-- Izquierda: descripción -->
+        <div class="intro-left">
+          <p class="welcome-message">
+            Disfruta tus plataformas de streaming favoritas, música, deportes y más.
+            <br><span class="highlight">¡Al mejor precio y con calidad garantizada!</span> 💸🔐📺
+            <br>Ofertas exclusivas, acceso inmediato y atención personalizada.
+            <br>¿List@ para hacer de tu sofá el mejor cine del mundo? <span class="wave">🍿🛋️</span>
+          </p>
 
-      <div class="home-cta">
-        <button class="btn" onclick="showSection('catalogo')">Ver Catálogo</button>
+          <div class="home-cta">
+            <button class="btn" onclick="openCatalog()">Ver Catálogo</button>
+          </div>
+
+          <!-- Barra de búsqueda y filtro (nuevo/integrado) -->
+          <div class="catalog-controls" aria-hidden="false" style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-start;">
+            <div style="flex:1;min-width:220px;max-width:560px;">
+              <input id="searchInput" type="search" placeholder="Buscar productos (nombre, descripción, promo)..." aria-label="Buscar productos" style="width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:#fff;">
+            </div>
+            <div>
+              <select id="categoryFilter" aria-label="Filtrar por categoría" style="padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:#fff;">
+                <option value="all">Todas las categorías</option>
+              </select>
+            </div>
+            <div>
+              <button id="clearSearchBtn" class="btn small" style="background:rgba(255,255,255,0.06);color:#fff;">Limpiar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Derecha: promos presentadas como tarjetas (como "productos") -->
+        <aside class="promo-side" aria-label="Promociones destacadas">
+          <h3 style="margin:0 0 0.6rem 0;color:#fff;font-size:1.05rem;">Promociones</h3>
+          <div id="promoSideContainer" class="promo-side-container" aria-live="polite">
+            <!-- Aquí inyecta app.js las promos en formato card -->
+          </div>
+          <div style="margin-top:0.6rem;">
+            <button class="btn small" onclick="openAllPromos()">Ver todas las promos</button>
+          </div>
+        </aside>
       </div>
 
-      <!-- Favoritos -->
-      <section class="home-section" aria-labelledby="fav-title">
-        <h2 id="fav-title" style="text-align:center;">Favoritos</h2>
-        <div id="favoritesContainer" class="container-centered"></div>
-      </section>
+    
 
-      <!-- Promociones -->
+      <!-- Promociones detalladas (se mantiene por compatibilidad, puedes ocultarla si no la necesitas) -->
       <section class="home-section" aria-labelledby="promos-title" style="margin-top:1rem;">
-        <h2 id="promos-title" style="text-align:center;">Promociones y Descuentos</h2>
+
         <div id="promosContainer" class="container-centered"></div>
       </section>
-    </section>
 
-    <!-- CATÁLOGO -->
-    <section id="catalogo" class="section" aria-labelledby="catalogo-title">
-      <h2 id="catalogo-title" class="title">Catálogo</h2>
-
-      <div class="catalog-controls" aria-hidden="false">
-      </div>
-
-      <div id="catalogContainer" class="catalog-container"></div>
-      <div id="catalogFeedback" class="toast" aria-live="polite"></div>
+      <!-- CATÁLOGO integrado -->
+      <section id="catalogSection" style="margin-top:1.6rem;">
+        <h2 id="catalogo-title" class="title" style="margin-top:0;">Catálogo</h2>
+        <div id="catalogContainer" class="catalog-container" tabindex="-1"></div>
+        <div id="catalogFeedback" class="toast" aria-live="polite"></div>
+      </section>
     </section>
 
     <!-- CARRITO -->
@@ -230,7 +255,7 @@
     <nav class="mobile-nav-list" role="navigation" aria-label="Navegación principal">
       <ul>
         <li><a href="#" onclick="showSection('inicio'); closeMobileNav();">Inicio</a></li>
-        <li><a href="#" onclick="showSection('catalogo'); closeMobileNav();">Catálogo</a></li>
+        <li><a href="#" onclick="openCatalog(); closeMobileNav();">Catálogo</a></li>
         <li><a href="#" onclick="showSection('carrito'); closeMobileNav();">Carrito</a></li>
         <li><a href="#" onclick="showSection('contacto'); closeMobileNav();">Contacto</a></li>
         <li><a href="#" onclick="showSection('admin'); closeMobileNav();">Administrador</a></li>
@@ -271,6 +296,26 @@
           <div style="margin-top:0.8rem;">
             <button id="modalBuyBtn" class="btn">Añadir al carrito</button>
             <button class="btn" style="background:#bbb;color:#222;margin-left:0.6rem;" onclick="closeProductModal()">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal promo -->
+  <div id="promoModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="promoModalTitle">
+      <button class="modal-close" onclick="closePromoModal()" aria-label="Cerrar">×</button>
+      <div style="display:flex;gap:1rem;align-items:flex-start;flex-wrap:wrap;">
+        <img id="promoModalImage" src="images/promo-placeholder.png" alt="Imagen promo" style="width:180px;height:120px;object-fit:cover;border-radius:8px;">
+        <div style="flex:1;">
+          <h3 id="promoModalTitle">Título promo</h3>
+          <div id="promoModalBadges" style="margin-bottom:0.4rem"></div>
+          <div id="promoModalBody"></div>
+          <div id="promoModalTarget" style="margin-top:0.6rem;color:#cfeee6;"></div>
+          <div style="margin-top:0.8rem;">
+            <button id="promoModalOpenCatalogBtn" class="btn">Ver en catálogo</button>
+            <button class="btn" style="background:#bbb;color:#222;margin-left:0.6rem;" onclick="closePromoModal()">Cerrar</button>
           </div>
         </div>
       </div>
